@@ -1,0 +1,36 @@
+.icon {
+    display: block;
+    width: 0;
+    height: 0;
+    padding: 10px;
+    border: 0;
+    margin: 0;
+    font-size: 0;
+    line-height: 0;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-size: cover;
+}
+.icon.inlineIcon {
+    display: inline;
+    vertical-align: super;
+}
+.icon.zoomIn {
+    background-image: url("../img/iconmonstr-magnifier-7.svg");
+}
+.icon.zoomOut {
+    background-image: url("../img/iconmonstr-magnifier-8.svg");
+}
+.icon.zoomReset {
+    background-image: url("../img/iconmonstr-magnifier-12.svg");
+}
+.icon.fullscreen {
+    background-image: url("../img/iconmonstr-fullscreen-10.svg");
+}
+.icon.upArrow {
+    background-image: url("../img/iconmonstr-arrow-66.svg");
+}
+.icon.notice {
+    background-image: url("../img/iconmonstr-warning-10.svg")
+}

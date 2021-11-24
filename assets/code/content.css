@@ -1,0 +1,296 @@
+.main {
+    width: 100vw;
+    min-width: 1000px;
+    max-width: 3000px;
+    height: 100vh;
+    position: relative;
+    margin: 0 auto;
+    background-color: hsl(0, 0%, 95%);
+    font-size: 100%;
+}
+.wrapper {
+    height: calc(100% - 80px);
+}
+.content {
+    width: 100%;
+    height: 100%;
+    scroll-behavior: smooth;
+}
+.wrapper, .footer {
+    width: 80%;
+    margin-left: auto;
+    position: relative;
+}
+.content, .sidebar {
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+.sidebar {
+    background-color: hsl(0, 0%, 5%);
+    position: absolute;
+    width: 20%;
+    height: 100%;
+    padding-bottom: 7px;
+    left: 0;
+    top: 0;
+}
+.sidebar ul, .sidebar li, .pageEditor > ul, .pageEditor li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.sidebar li {
+    position: relative;
+}
+.sidebar li.focused a {
+    text-decoration: underline;
+}
+.sidebar a {
+    background-color: hsla(0, 0%, 100%, 0);
+    display: block;
+    padding: 7px 14px;
+    color: hsl(0, 0%, 100%);
+    font-family: "consolas", sans-serif;
+    font-weight: 400;
+    font-size: 80%;
+    white-space: nowrap;
+    text-transform: capitalize;
+}
+.sidebar a:focus {
+    outline: none;
+}
+.sidebar a::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background-color: hsla(0, 0%, 100%, 0);
+    -webkit-transition: 250ms ease-out background;
+    -moz-transition: 250ms ease-out background;
+    -o-transition: 250ms ease-out background;
+    -ms-transition: 250ms ease-out background;
+    transition: 250ms ease-out background;
+}
+.sidebar a:hover::after, .sidebar a:focus::after, .sidebar li.focused a::after {
+    background-color: hsla(0, 0%, 100%, 0.25);
+    pointer-events: none;
+    -webkit-transition: none;
+    -moz-transition: none;
+    -o-transition: none;
+    -ms-transition: none;
+    transition: none;
+}
+.sidebar h2 {
+    color: hsla(0, 0%, 100%, 0.75);
+    font-weight: 400;
+    margin: 7px 0;
+    padding: 14px;
+    font-size: 100%;
+    border-bottom: 1px solid hsla(0, 0%, 100%, 0.25);
+    text-transform: uppercase;
+}
+.sidebar h2:first-child {
+    margin-top: 0;
+}
+.sidebar span {
+    position: absolute;
+    right: 0;
+    background-color: hsl(0, 0%, 5%);
+    color: hsla(0, 0%, 100%, 0.5);
+    padding-right: 7px;
+}
+.container {
+    width: 80%;
+    margin: 45px auto 0;
+    padding: 14px 27px;
+    background-color: hsl(0, 0%, 100%);
+    position: relative;
+    border-radius: 3px;
+    border-bottom: 7px solid hsl(0, 0%, 5%);
+}
+.content > .container:last-child {
+    margin: 45px auto;
+}
+.container, .pageEditor {
+    -moz-box-shadow: 0 0 6px hsla(0, 0%, 0%, 0.10);
+    -webkit-box-shadow: 0 0 6px hsla(0, 0%, 0%, 0.10);
+    box-shadow: 0 0 6px hsla(0, 0%, 0%, 0.10);
+}
+.container li, .container p {
+    white-space: break-spaces;
+    line-height: 1.5;
+    font-weight: 400;
+}
+.container h1 {
+    position: relative;
+}
+.container h1 > b {
+    font-family: monospace;
+    vertical-align: top;
+    font-size: 80%;
+}
+.category {
+    font-size: 50%;
+    text-transform: uppercase;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+.demo {
+    background-color: hsl(0, 0%, 100%);
+    border: 1px solid hsl(0, 0%, 5%);
+    border-spacing: 0;
+}
+.demo > thead {
+    background-color: hsl(0, 0%, 5%);
+    color: hsl(0, 0%, 100%);
+    text-align: center;
+}
+.demo > thead td {
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+.demo.lined > tbody > tr:nth-child(even) {
+    background-color: hsla(0, 0%, 0%, .075);
+}
+.demo td {
+    padding: 0 7px;
+    border-right: 1px solid hsl(0, 0%, 5%);
+    vertical-align: top;
+}
+.demo td:last-child {
+    border-right: none;
+}
+.references {
+    text-transform: lowercase;
+    font-size: 90%;
+}
+.footer {
+    height: 80px;
+    background-color: hsl(0, 0%, 5%);
+    color: #FFF;
+    font-weight: 100;
+    font-size: 90%;
+}
+.copyright {
+    width: calc(100% - 80px);
+    position: absolute;
+    top: 50%;
+    right: 0;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    z-index: 1;
+    text-align: center;
+}
+.pageEditor {
+    position: absolute;
+    bottom: 30px;
+    background-color: hsla(0, 0%, 0%, 0.8);
+    padding: 7px 14px;
+    border-radius: 69px;
+    left: 50%;
+    z-index: 1;
+    -webkit-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    transform: translateX(-50%);
+    -webkit-transition: 250ms ease;
+    -moz-transition: 250ms ease;
+    -o-transition: 250ms ease;
+    -ms-transition: 250ms ease;
+    transition: 250ms ease;
+    pointer-events: all;
+}
+.pageEditor.hide {
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+    filter: alpha(opacity=0);
+    -moz-opacity: 0;
+    -khtml-opacity: 0;
+    opacity: 0;
+    -webkit-transform: translateX(-50%) translateY(20px);
+    -ms-transform: translateX(-50%) translateY(20px);
+    transform: translateX(-50%) translateY(20px);
+    pointer-events: none;
+}
+.pageEditor li {
+    vertical-align: top;
+    float: left;
+}
+.pageEditor button {
+    outline: 0;
+    border: 0;
+    padding: 7px;
+    margin-right: 10px;
+    background-color: transparent;
+    border-radius: 7px;
+}
+.pageEditor button:hover {
+    background-color: hsla(0, 0%, 100%, 0.2);
+}
+.pageEditor li:last-child > button {
+    margin-right: 0;
+}
+.pageEditor .fullscreenExit > .icon.fullscreen {
+    background-image: url("../img/iconmonstr-fullscreen-11.svg");
+}
+.pageEditor li:last-child {
+    border-left: 1px solid hsl(0, 0%, 100%);
+    padding-left: 10px;
+}
+.content span.codetype {
+    color: red;
+}
+.content span.pointer {
+    color: green;
+}
+.content span.dataSize {
+    color: blue;
+}
+.content span.volatileOffset {
+    color: orange;
+}
+.content span.address {
+    color: blueviolet;
+}
+.content span.value {
+    color: hotpink;
+}
+.content span.offset {
+    color: gold;
+}
+.content span.range {
+    color: darkmagenta;
+}
+.content span.amount {
+    color: cornflowerblue;
+}
+.content span.varOffset {
+    color: cadetblue;
+}
+.content span.increment {
+    color: brown;
+}
+.content span.intRegister {
+    color: royalblue;
+}
+.content span.floatRegister {
+    color: firebrick;
+}
+.content span.operation {
+    color: limegreen;
+}
+@media (prefers-reduced-motion) {
+    .content {
+        scroll-behavior: initial !important;
+    }
+    .sidebar a::after {
+        -webkit-transition: none !important;
+        -moz-transition: none !important;
+        -o-transition: none !important;
+        -ms-transition: none !important;
+        transition: none !important;
+    }
+}

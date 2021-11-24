@@ -1,0 +1,91 @@
+html {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    font-size: 100%;
+    -webkit-text-size-adjust: 100%;
+    font-variant-ligatures: none;
+    -webkit-font-variant-ligatures: none;
+    text-rendering: optimizeLegibility;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    text-shadow: hsla(0, 0%, 0%, 0.01) 0 0 1px;
+}
+body {
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    background-color: hsl(0, 0%, 5%);
+    color: hsl(0, 0%, 15%);
+    margin: 0;
+    padding: 0;
+    border: 0 none;
+    overflow-y: hidden;
+    overflow-x: auto;
+}
+*, *::before, *::after {
+    -webkit-box-sizing: inherit;
+    -moz-box-sizing: inherit;
+    box-sizing: inherit;
+}
+*::before, *::after {
+    position: absolute;
+    z-index: 1;
+}
+::selection {
+    background-color: hsl(0, 0%, 15%);
+}
+a, a:link, a:visited, a:active {
+    color: hsl(214, 92%, 62%);
+    font-weight: 700;
+    text-decoration: none;
+    -webkit-transition: 250ms ease color;
+    -moz-transition: 250ms ease color;
+    -o-transition: 250ms ease color;
+    -ms-transition: 250ms ease color;
+    transition: 250ms ease color;
+}
+a:hover, a:focus {
+    color: hsl(214, 92%, 47%);
+    text-decoration: underline;
+}
+h1 {
+    border-bottom: 1px dashed;
+}
+h3 {
+    margin: 0;
+    padding: 0;
+}
+code {
+    font-family: consolas;
+}
+p {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+.no-select, img {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.ghost {
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+    filter: alpha(opacity=50);
+    -moz-opacity: 0.5;
+    -khtml-opacity: 0.5;
+    opacity: 0.5;
+}
+@media (prefers-reduced-motion) {
+    *, *::before, *::after {
+        -webkit-transition: none !important;
+        -moz-transition: none !important;
+        -o-transition: none !important;
+        -ms-transition: none !important;
+        transition: none !important;
+    }
+}
+@media print {
+    body {
+        display: none;
+    }
+}
