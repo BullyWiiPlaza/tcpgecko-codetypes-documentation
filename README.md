@@ -1,12 +1,12 @@
 # TCP Gecko Codetypes Documentation
 
-This is a codetypes documentation website for CosmoCortney's Nintendo Wii U cafe codetypes codehandler. The code handler is implemented in the `TCP Gecko Installer`.
+This is a codetypes documentation website for [CosmoCortney's Nintendo Wii U cafe codetypes codehandler](https://github.com/CosmoCortney/PPC-Cheat-Code-Handler). The code handler is implemented and usable via the [`TCP Gecko Installer`](https://github.com/BullyWiiPlaza/tcpgecko).
 
 Cafe codes can be developed and applied with [`JGecko U`](https://github.com/BullyWiiPlaza/JGeckoU).
 
 ## Contributing
 
-You are encouraged to submit improvements or additions to the codetypes documentation by sending a pull request. Opening an issue if you cannot make the improvement/change yourself is okay, too.
+You are encouraged to submit improvements or additions to the codetypes documentation website by sending a pull request. Opening an issue if you cannot make the improvement/change yourself is okay, too.
 
 ## Hosting
 
