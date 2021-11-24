@@ -4,6 +4,8 @@ This is a codetypes documentation website for [CosmoCortney's Nintendo Wii U caf
 
 Cafe codes can be developed and applied with [`JGecko U`](https://github.com/BullyWiiPlaza/JGeckoU).
 
+The documentation is hosted for you e.g. [here](https://bullywiiplaza.website/wiiu/codetypes_EN.html).
+
 ## Contributing
 
 You are encouraged to submit improvements or additions to the codetypes documentation website by sending a pull request. Opening an issue if you cannot make the improvement/change yourself is okay, too.
