@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JGecko U - TCP Gecko 2.51 - cafe codetype Documentation</title>
+    <title>JGecko U - TCP Gecko 2.52 - cafe codetype Documentation</title>
     <link rel="shortcut icon" href="assets/img/Gecko.png" type="image/png">
     <link rel="stylesheet" href="assets/code/base.css">
     <link rel="stylesheet" href="assets/code/content.css">
@@ -49,6 +49,9 @@
                 <li><a href="#0B">If value between<span>[0B]</span></a></li>
                 <li><a href="#0C">Add Time-Dependence<span>[0C]</span></a></li>
                 <li><a href="#0D">Reset Timer<span>[0D]</span></a></li>
+                <li><a href="#0F">Negate Conditional<span>[0F]</span></a></li>
+                <li><a href="#80">Loop<span>[80]</span></a></li>
+                <li><a href="#81">Loop Indexed<span>[81]</span></a></li>
             </ul>
             <h2>Arithmetic Operators</h2>
             <ul>
@@ -63,17 +66,23 @@
             <ul>
                 <li><a href="#30">Load Pointer<span>[30]</span></a></li>
                 <li><a href="#31">Add Offset to Pointer<span>[31]</span></a></li>
+                <li><a href="#32">Add Offset to Pointer Indexed<span>[32]</span></a></li>
+                <li><a href="#33">Subtract Offset from Pointer<span>[33]</span></a></li>
+                <li><a href="#34">Subtract Offset from Pointer Indexed<span>[34]</span></a></li>
             </ul>
             <h2>Execute</h2>
             <ul>
                 <li><a href="#C0">Execute ASM<span>[C0]</span></a></li>
                 <li><a href="#C1">Perform Cafe OS Syscalls<span>[C1]</span></a></li>
+                <li><a href="#C2">Insert ASM via LR<span>[C2]</span></a></li>
+                <li><a href="#C3">Insert ASM via CTR<span>[C3]</span></a></li>
+                <li><a href="#C4">ASM String Writes<span>[C4]</span></a></li>
             </ul>
             <h2>Termination</h2>
             <ul>
-                <li><a href="#D0">Termination<span>[D0]</span></a></li>
-                <li><a href="#D1">No Operation<span>[D1]</span></a></li>
-                <li><a href="#D2">Timer Termination<span>[D2]</span></a></li>
+                <li><a href="#D0">Terminator<span>[D0]</span></a></li>
+                <li><a href="#D1">Loop Terminator<span>[D1]</span></a></li>
+                <li><a href="#D2">Conditional Terminator<span>[D2]</span></a></li>
             </ul>
         </div>
         <div class="wrapper" id="contentPanel">
@@ -90,7 +99,7 @@
             <div class="content" id="Content">
                 <a name="general"></a>
                 <div class="container">
-                    <h1>General Information <span class="no-select ghost category">TCP Gecko 2.51</span></h1>
+                    <h1>General Information <span class="no-select ghost category">TCP Gecko 2.52</span></h1>
                     <p>Cafe codetypes is a feature from TCP Gecko to simplify the making of cheat codes for the Nintendo Wii U.
 
 This documentation breaks down all available cafe codetypes into components, describes what those components do and shows available parameters.
@@ -158,13 +167,17 @@ Each component is assigned a letter and color for better visualization how each 
                                 <td><code><b><span class="operation">O</span></b></code></td>
                                 <td><code>Operation type</code></td>
                             </tr>
+                            <tr>
+                                <td><code><b><span class="ghost">DEADCAFE</span></b>, <b><span class="ghost">CAFEBABE</span></b>, <b><span class="ghost">DEADC0DE</span></b></code></td>
+                                <td><code>Attempts to make code a bit more readable.<br>These values can also be set to <b><span class="ghost">00000000</span></b>.</code></td>
+                            </tr>
                         </tbody>
                     </table>
                     <p>Letters with washed out colours represent codelines that are required for a cafe codetype to work.</p>
                     <p><i class="icon notice inlineIcon"></i><b> NOTICE</b>: All cafe codetypes follow a specific sequence of Hexadecimal values. Failure to follow the structure of any codetypes may crash the console. Also, accessing or writing to invalid addresses can crash the console. When you crash, you may unplug your Wii U, plug it back in, start your Wii U by pressing the power button and run the TCP Gecko Installer again.</p>
                 </div>
                 <div class="container">
-                    <h1>Q&As <span class="no-select ghost category">TCP Gecko 2.51</span></h1>
+                    <h1>Q&As <span class="no-select ghost category">TCP Gecko 2.52</span></h1>
 
                     <h3>What is a pointer?</h3>
                     <blockquote>A pointer is an object in many programming languages that stores a memory address. A pointer references a location in memory, and obtaining the value stored at that location is known as dereferencing (Load) the pointer.</blockquote>
@@ -195,7 +208,7 @@ A 32-bit Hexadecimal value has 4'294'967'296 possible values. (Hex: 0 to FFFFFFF
                     <p class="references">* Use a Decimal to Hexadecimal calculator for ease of value convertion.</p>
                 </div>
                 <div class="container">
-                    <h1>Sources <span class="no-select ghost category">TCP Gecko 2.51</span></h1>
+                    <h1>Sources <span class="no-select ghost category">TCP Gecko 2.52</span></h1>
                     <p><a href="https://www.techopedia.com/definition/23980/float-computer-science">https://www.techopedia.com/definition/23980/float-computer-science</a>
 <a href="https://en.wikipedia.org/wiki/Offset_(computer_science)">https://en.wikipedia.org/wiki/Offset_(computer_science)</a>
 <a href="https://en.wikipedia.org/wiki/Signedness">https://en.wikipedia.org/wiki/Signedness</a>
@@ -256,9 +269,9 @@ A 32-bit Hexadecimal value has 4'294'967'296 possible values. (Hex: 0 to FFFFFFF
                         </thead>
                         <tbody>
                             <tr>
-                                <td><code><b><span class="codetype">01</span><span class="pointer">0</span>0<span class="amount">NNNN</span> <span class="address">LLLLLLLL</span><br>00000000 000000FF</b></code></td>
-                                <td><code><b><span class="codetype">01</span><span class="pointer">0</span>0<span class="amount">0001</span> <span class="address">LLLLLLLL</span><br><span class="value">VV</span>000000 000000FF</b></code></td>
-                                <td><code><b><span class="codetype">01</span><span class="pointer">0</span>0<span class="amount">0008</span> <span class="address">LLLLLLLL</span><br><span class="value">VVVVVVVV VVVVVVVV</span><br>00000000 000000FF</b></code></td>
+                                <td><code><b><span class="codetype">01</span><span class="pointer">0</span>0<span class="amount">NNNN</span> <span class="address">LLLLLLLL</span><br>00000000 00000000</b></code></td>
+                                <td><code><b><span class="codetype">01</span><span class="pointer">0</span>0<span class="amount">0001</span> <span class="address">LLLLLLLL</span><br><span class="value">VV</span>000000 00000000</b></code></td>
+                                <td><code><b><span class="codetype">01</span><span class="pointer">0</span>0<span class="amount">0008</span> <span class="address">LLLLLLLL</span><br><span class="value">VVVVVVVV VVVVVVVV</span><br>00000000 00000000</b></code></td>
                             </tr>
                         </tbody>
                     </table>
@@ -273,15 +286,14 @@ A 32-bit Hexadecimal value has 4'294'967'296 possible values. (Hex: 0 to FFFFFFF
                         </thead>
                         <tbody>
                             <tr>
-                                <td><code><b><span class="no-select ghost">30000000 LLLLLLLL<br>RANGE_ST RANGE_EN<br></span><span class="codetype">01</span><span class="pointer">1</span>0<span class="amount">NNNN</span> <span class="volatileOffset">KKKKKKKK</span><br>00000000 000000FF<span class="no-select ghost"><br>D0000000 DEADCAFE</span></b></code></td>
-                                <td><code><b><span class="no-select ghost">30000000 LLLLLLLL<br>RANGE_ST RANGE_EN<br></span><span class="codetype">01</span><span class="pointer">1</span>0<span class="amount">0001</span> <span class="volatileOffset">KKKKKKKK</span><br><span class="value">VV</span>000000 000000FF<span class="no-select ghost"><br>D0000000 DEADCAFE</span></b></code></td>
-                                <td><code><b><span class="no-select ghost">30000000 LLLLLLLL<br>RANGE_ST RANGE_EN<br></span><span class="codetype">01</span><span class="pointer">1</span>0<span class="amount">0008</span> <span class="volatileOffset">KKKKKKKK</span><br><span class="value">VVVVVVVV VVVVVVVV</span><br>00000000 000000FF<span class="no-select ghost"><br>D0000000 DEADCAFE</span></b></code></td>
+                                <td><code><b><span class="no-select ghost">30000000 LLLLLLLL<br>RANGE_ST RANGE_EN<br></span><span class="codetype">01</span><span class="pointer">1</span>0<span class="amount">NNNN</span> <span class="volatileOffset">KKKKKKKK</span><br>00000000 00000000<span class="no-select ghost"><br>D0000000 DEADCAFE</span></b></code></td>
+                                <td><code><b><span class="no-select ghost">30000000 LLLLLLLL<br>RANGE_ST RANGE_EN<br></span><span class="codetype">01</span><span class="pointer">1</span>0<span class="amount">0001</span> <span class="volatileOffset">KKKKKKKK</span><br><span class="value">VV</span>000000 00000000<span class="no-select ghost"><br>D0000000 DEADCAFE</span></b></code></td>
+                                <td><code><b><span class="no-select ghost">30000000 LLLLLLLL<br>RANGE_ST RANGE_EN<br></span><span class="codetype">01</span><span class="pointer">1</span>0<span class="amount">0008</span> <span class="volatileOffset">KKKKKKKK</span><br><span class="value">VVVVVVVV VVVVVVVV</span><br>00000000 00000000<span class="no-select ghost"><br>D0000000 DEADCAFE</span></b></code></td>
                             </tr>
                         </tbody>
                     </table>
                     <p>Writes <code><b><span class="amount">NNNN</span></b></code> amount of bytes (<code><b><span class="value">VV</span></b></code>) to memory address <code><b><span class="address">LLLLLLLL</span></b></code>. If a pointer is in use, a signed volatile offset (<code><b><span class="volatileOffset">KKKKKKKK</span></b></code>) is added to the computed pointer. *
-If a codeline is filled, a new line can be added.
-To terminate the codetype, the last byte has to end with a value of <code><b>FF</b></code>.</p>
+If a codeline is filled, a new line can be added.</p>
 
                     <p class="references">* Writing value to a pointer must have a loaded pointer beforehand. See cafe codetype "<a href="#30" title="Jump to: Load Pointer [30]">Load Pointer [30]</a>" to learn more.</p>
 
@@ -773,8 +785,8 @@ If the condition is false, codetypes below will be skipped. Codetype <code><b><s
                             </tr>
                         </tbody>
                     </table>
-                    <p>If global frame counter reaches <code><b><span class="amount">NNNNNNNN</span></b></code> amount of frames, codetypes below will be skipped.
-cafe codetype <code><b><span class="codetype">D2</span></b></code> determines when to continue code execution.</p>
+                    <p>If <code><b><span class="amount">NNNNNNNN</span></b></code> amount of frames has passed after the code was injected, codetypes below will be skipped.
+cafe codetype <code><b><span class="codetype">D2</span></b></code> determines where to continue code execution.</p>
                 </div>
                 <a name="0D"></a>
                 <div class="container">
@@ -791,7 +803,69 @@ cafe codetype <code><b><span class="codetype">D2</span></b></code> determines wh
                             </tr>
                         </tbody>
                     </table>
-                    <p>Resets global frame counter if value at memory address <code><b><span class="address">LLLLLLLL</span></b></code> is equal to <code><b><span class="value">VVVV</span></b></code>.</p>
+                    <p>If address <code><b><span class="address">LLLLLLLL</span></b></code> has a value equal to the specified 16-bit value <code><b><span class="value">VVVV</span></b></code>, the previous Time-Dependent-Codetype will restart its timer.</p>
+                </div>
+                <a name="0F"></a>
+                <div class="container">
+                    <h1>Negate Conditional <b>[0F]</b><span class="no-select ghost category">Logical Operators</span></h1>
+                    <table class="demo">
+                        <thead>
+                            <tr class="no-select">
+                                <td>Format</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code><b><span class="codetype">0F</span>000000 00000000<span class="no-select ghost"><br>...<br>D0000000 DEADCAFE</span></b></code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p>Codetypes below this code line will execute if the previous condition was false.
+
+If Equal To > If Not Equal To
+If Not Equal To > If Equal To
+If Greater Than > If Lower Than Or Equal To
+If Lower Than > If Greater Than Or Equal To
+If Greater Than Or Equal To > If Lower Than
+If Lower Than Or Equal To > If Greater Than
+If Value Between > If Lower Than Or Greater Than
+Conditional AND > Conditional NAND
+Conditional OR > Conditional NOR
+Time Dependence > Execute after TTTTTTTT frames has passed.</p>
+                </div>
+                <a name="80"></a>
+                <div class="container">
+                    <h1>Loop <b>[80]</b><span class="no-select ghost category">Logical Operators</span></h1>
+                    <table class="demo">
+                        <thead>
+                            <tr class="no-select">
+                                <td>Format</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code><b><span class="codetype">80</span>000000 <span class="amount">NNNNNNNN</span><span class="no-select ghost"><br>...<br>D1000000 DEADC0DE</span></b></code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p>Codelines between codetype [80] and codetype [D1] will repeat until <code><b><span class="amount">NNNNNNNN</span></b></code> amount of loops has been reached.</p>
+                </div>
+                <a name="81"></a>
+                <div class="container">
+                    <h1>Loop Indexed <b>[81]</b><span class="no-select ghost category">Logical Operators</span></h1>
+                    <table class="demo">
+                        <thead>
+                            <tr class="no-select">
+                                <td>Format</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code><b><span class="codetype">81</span>000<span class="intRegister">R</span>00 00000000<span class="no-select ghost"><br>...<br>D1000000 DEADC0DE</span></b></code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p>Codelines between codetype [81] and codetype [D1] will repeat until the value at integer register <code><b><span class="intRegister">R</span></b></code> has been reached.</p>
                 </div>
                 <a name="10"></a>
                 <div class="container">
@@ -973,7 +1047,8 @@ There are 8 available float registers: <code><b><span class="floatRegister">0</s
 4 = Addition (<code><b><span class="intRegister">R</span></b></code> = <code><b><span class="intRegister">R</span></b></code> + <code><b><span class="value">VVVVVVVV</span></b></code>)
 5 = Subtraction (<code><b><span class="intRegister">R</span></b></code> = <code><b><span class="intRegister">R</span></b></code> - <code><b><span class="value">VVVVVVVV</span></b></code>)
 6 = Multiplication (<code><b><span class="intRegister">R</span></b></code> = <code><b><span class="intRegister">R</span></b></code> * <code><b><span class="value">VVVVVVVV</span></b></code>)
-7 = Division (<code><b><span class="intRegister">R</span></b></code> = <code><b><span class="intRegister">R</span></b></code> / <code><b><span class="value">VVVVVVVV</span></b></code>)</p>
+7 = Division (<code><b><span class="intRegister">R</span></b></code> = <code><b><span class="intRegister">R</span></b></code> / <code><b><span class="value">VVVVVVVV</span></b></code>)
+8 = Convert integer to float (Integer register <code><b><span class="intRegister">S</span></b></code> = Converted float register <code><b><span class="intRegister">R</span></b></code>)</p>
                     <p class="references">* Usage of a pointer requires a loaded pointer beforehand. See cafe codetype "<a href="#30" title="Jump to: Load Pointer [30]">Load Pointer [30]</a>" to learn more.</p>
                 </div>
                 <a name="15"></a>
@@ -1081,6 +1156,57 @@ If the pointer or pointer-in-pointer is invalid, codetypes below will be skipped
                     </table>
                     <p>Adds a non-volatile offset (defined by <code><b><span class="offset">QQQQQQQQ</span></b></code>) to the previously computed pointer.</p>
                 </div>
+                <a name="32"></a>
+                <div class="container">
+                    <h1>Add Offset To Pointer Indexed <b>[32]</b><span class="no-select ghost category">Memory Access</span></h1>
+                    <table class="demo">
+                        <thead>
+                            <tr class="no-select">
+                                <td>Format</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code><b><span class="codetype">32</span>000<span class="intRegister">R</span>00 <span class="offset">QQQQQQQQ</span></b></code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p>Adds the value from integer register (<code><b><span class="intRegister">R</span></b></code>) + <code><b><span class="offset">QQQQQQQQ</span></b></code> to the previously computed pointer.</p>
+                </div>
+                <a name="33"></a>
+                <div class="container">
+                    <h1>Subtract Offset From Pointer <b>[33]</b><span class="no-select ghost category">Memory Access</span></h1>
+                    <table class="demo">
+                        <thead>
+                            <tr class="no-select">
+                                <td>Format</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code><b><span class="codetype">33</span>000000 <span class="offset">QQQQQQQQ</span></b></code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p>Subtracts a non-volatile offset (defined by <code><b><span class="offset">QQQQQQQQ</span></b></code>) from the previously computed pointer.</p>
+                </div>
+                <a name="34"></a>
+                <div class="container">
+                    <h1>Subtract Offset From Pointer Indexed <b>[34]</b><span class="no-select ghost category">Memory Access</span></h1>
+                    <table class="demo">
+                        <thead>
+                            <tr class="no-select">
+                                <td>Format</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code><b><span class="codetype">34</span>000<span class="intRegister">R</span>00 <span class="offset">QQQQQQQQ</span></b></code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p>Subtracts the previously computed pointer by the value from integer register (<code><b><span class="intRegister">R</span></b></code>) + <code><b><span class="offset">QQQQQQQQ</span></b></code>.</p>
+                </div>
                 <a name="C0"></a>
                 <div class="container">
                     <h1>Execute ASM <b>[C0]</b><span class="no-select ghost category">Execute</span></h1>
@@ -1092,7 +1218,7 @@ If the pointer or pointer-in-pointer is invalid, codetypes below will be skipped
                         </thead>
                         <tbody>
                             <tr>
-                                <td><code><b><span class="codetype">C0</span>00<span class="amount">NNNN</span> <span class="value">490F6AE6</span></b></code></td>
+                                <td><code><b><span class="codetype">C0</span>00<span class="amount">NNNN</span> <span class="value">4E800020</span></b></code></td>
                             </tr>
                         </tbody>
                     </table>
@@ -1105,14 +1231,13 @@ If the pointer or pointer-in-pointer is invalid, codetypes below will be skipped
                         </thead>
                         <tbody>
                             <tr>
-                                <td><code><b><span class="codetype">C0</span>00<span class="amount">0002</span> <span class="value">3D801100</span><br><span class="value">38600001</span> <span class="value">906C0000</span><br><span class="value">490F6AE6</span> 00000000</b></code></td>
+                                <td><code><b><span class="codetype">C0</span>00<span class="amount">0002</span> <span class="value">3D801100</span><br><span class="value">38600001</span> <span class="value">906C0000</span><br><span class="value">4E800020</span> 00000000</b></code></td>
                             </tr>
                         </tbody>
                     </table>
-                    <p>Executes machine code. *
-<code><b><span class="amount">NNNN</span></b></code> defines the amount of codelines (excluding the first one).
-The last instruction must end with <code><b>ba 0x010F6AE4</b></code> (<code><b><span class="value">490F6AE6</span></b></code>).
-All registers are available if used properly.</p>
+                    <p>This executes machine code *, <code><b><span class="amount">NNNN</span></b></code> defines the amount of codelines (excluding the first one).
+All registers (GPRs, FPRs and SPRs) are available if used properly. Code must branch to the LR at the end of the code. (<code><b>blr</b></code> / <code><b><span class="value">0x4E800020</span></b></code>).
+If the link register (LR) is needed, remember to back it up in the stack or somewhere else and recover it later to prevent crashes.</p>
                     <p class="references">* Refer to this documentation for writing PowerPC Assembly code: <a href="https://www.ibm.com/support/knowledgecenter/ssw_aix_72/assembler/assembler_pdf.pdf" title="View assembly documentation">https://www.ibm.com/support/knowledgecenter/ssw_aix_72/assembler/assembler_pdf.pdf</a>.</p>
                 </div>
                 <a name="C1"></a>
@@ -1133,6 +1258,62 @@ All registers are available if used properly.</p>
                     <p>Perform a system call. <code><b><span class="value">XXXX</span></b></code> = SysCall value.*</p>
                     <p class="references">* Visit <a href="http://wiiubrew.org/wiki/Cafe_OS_syscalls" title="Visit WiiUBrew.org">WiiUBrew.org</a> to find all available SysCall values.</p>
                 </div>
+                <a name="C2"></a>
+                <div class="container">
+                    <h1>Insert ASM via LR <b>[C2]</b><span class="no-select ghost category">Execute</span></h1>
+                    <table class="demo">
+                        <thead>
+                            <tr>
+                                <td>Format</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code><b><span class="codetype">C2</span>00<span class="amount">NNNN</span> <span class="address">LLLLLLLL</span><br><span class="value">XXXXXXXX</span> <span class="value">XXXXXXXX</span></b></code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p>This codetype will replace the hook address <code><b><span class="address">LLLLLLLL</span></b></code> with an absolute branch and link to the first "<code><b><span class="value">XXXXXXXX</span></b></code>" instruction. <code><b><span class="amount">NNNN</span></b></code> defines the amount of code lines excluding the first one.
+This is similar to the Wii variant, except you must end the assembly code with a "blr", meaning you should save/restore the LR as needed. This codetype should work fine as long as your hook address is within a non-leaf function, meaning that the function saves the LR at the beginning. *</p>
+                    <p class="references">* Refer to this documentation for writing PowerPC Assembly code: <a href="https://www.ibm.com/support/knowledgecenter/ssw_aix_72/assembler/assembler_pdf.pdf" title="View assembly documentation">https://www.ibm.com/support/knowledgecenter/ssw_aix_72/assembler/assembler_pdf.pdf</a>.</p>
+                </div>
+                <a name="C3"></a>
+                <div class="container">
+                    <h1>Insert ASM via CTR <b>[C3]</b><span class="no-select ghost category">Execute</span></h1>
+                    <table class="demo">
+                        <thead>
+                            <tr>
+                                <td>Format</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code><b><span class="codetype">C3</span>00<span class="amount">NNNN</span> <span class="address">LLLLLLLL</span><br><span class="value">XXXXXXXX</span> <span class="value">XXXXXXXX</span></b></code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p>This codetype will replace the hook address <code><b><span class="address">LLLLLLLL</span></b></code> with an absolute branch to the first "<code><b><span class="value">XXXXXXXX</span></b></code>" instruction. <code><b><span class="amount">NNNN</span></b></code> defines the amount of code lines excluding the first one.
+This is similar to the Wii variant, except you must end the assembly code with a "bctr"and before this you must load the address LLLLLLLL + 0x4 into the CTR. This codetype is included for compatibility in case the C2 codetype causes a crash for a given address (i.e. the address is within a leaf function). *</p>
+                    <p class="references">* Refer to this documentation for writing PowerPC Assembly code: <a href="https://www.ibm.com/support/knowledgecenter/ssw_aix_72/assembler/assembler_pdf.pdf" title="View assembly documentation">https://www.ibm.com/support/knowledgecenter/ssw_aix_72/assembler/assembler_pdf.pdf</a>.</p>
+                </div>
+                <a name="C4"></a>
+                <div class="container">
+                    <h1>ASM String Writes <b>[C4]</b><span class="no-select ghost category">Execute</span></h1>
+                    <table class="demo">
+                        <thead>
+                            <tr>
+                                <td>Format</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code><b><span class="codetype">C4</span>00<span class="amount">NNNN</span> <span class="address">LLLLLLLL</span><br><span class="value">XXXXXXXX</span> <span class="value">XXXXXXXX</span></b></code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p>This codetype allows writing data to the code region. <code><b><span class="address">LLLLLLLL</span></b></code> defines the starting memory address for the writes. <code><b><span class="amount">NNNN</span></b></code> defines the amount of instructions (32-bit values) to be stored. *</p>
+                    <p class="references">* Refer to this documentation for writing PowerPC Assembly code: <a href="https://www.ibm.com/support/knowledgecenter/ssw_aix_72/assembler/assembler_pdf.pdf" title="View assembly documentation">https://www.ibm.com/support/knowledgecenter/ssw_aix_72/assembler/assembler_pdf.pdf</a>.</p>
+                </div>
                 <a name="D0"></a>
                 <div class="container">
                     <h1>Terminator <b>[D0]</b><span class="no-select ghost category">Termination</span></h1>
@@ -1148,12 +1329,11 @@ All registers are available if used properly.</p>
                             </tr>
                         </tbody>
                     </table>
-                    <p>Resumes code execution.
-Termination is required for pointers and conditional codetypes.</p>
+                    <p>If a condition or pointer is invalid, the codehandler will branch here, skipping any codelines between the conditional or pointer codetype and the terminator.</p>
                 </div>
                 <a name="D1"></a>
                 <div class="container">
-                    <h1>No Operation <b>[D1]</b><span class="no-select ghost category">Termination</span></h1>
+                    <h1>Loop Terminator <b>[D1]</b><span class="no-select ghost category">Termination</span></h1>
                     <table class="demo">
                         <thead>
                             <tr>
@@ -1166,11 +1346,11 @@ Termination is required for pointers and conditional codetypes.</p>
                             </tr>
                         </tbody>
                     </table>
-                    <p>This line of code does nothing.</p>
+                    <p>If the amount of loops from a loop codetype hasn't been reached, this codetype tells the codehandler to branch to the previous uncompleted loop.</p>
                 </div>
                 <a name="D2"></a>
                 <div class="container">
-                    <h1>Timer Termination <b>[D2]</b><span class="no-select ghost category">Termination</span></h1>
+                    <h1>Conditional Terminator <b>[D2]</b><span class="no-select ghost category">Termination</span></h1>
                     <table class="demo">
                         <thead>
                             <tr>
@@ -1183,14 +1363,15 @@ Termination is required for pointers and conditional codetypes.</p>
                             </tr>
                         </tbody>
                     </table>
-                    <p>Resumes code execution.
-This line of code is required at the end of Time-Dependence codetypes.</p>
+                    <p>Terminates 1 conditional cafe code type. If a condition is false, the codehandler will skip any codelines between the conditional codetype and the conditional terminator.
+This codetype keeps track of all conditionals inside other conditionals, this gives the ability to create multiple "layers" of "if" statements.
+                    </p>
                 </div>
             </div>
         </div>
         <div class="footer">
             <img alt="JGecko U" title="JGecko U" src="assets/img/Gecko.png" width="80" height="80">
-            <div class="copyright no-select">PPC codehandler and cafe codetypes are written by <a href="https://www.youtube.com/user/CosmoCortney/videos" title="Visit CosmoCortney's YouTube Channel" tabindex="-1">CosmoCortney</a>. | See the "About" section in JGecko U to see all credits.</div>
+            <div class="copyright no-select">PPC codehandler and cafe codetypes are written by <a href="https://www.youtube.com/@Mewtality" title="Visit Mewtality's YouTube Channel" tabindex="-1">Mewtality</a>. | Special thanks to <a href="https://www.youtube.com/@LawnMeower" title="Visit CosmoCortney's YouTube Channel" tabindex="-1">CosmoCortney</a> for the original code handler and <a href="https://www.youtube.com/@shyguy3958" title="Visit ShyGuy's YouTube Channel" tabindex="-1">ShyGuy</a> for the C2, C3 and C4 code types.</div>
         </div>
     </div>
 </body>
