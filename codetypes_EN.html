@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JGecko U - TCP Gecko 2.52 - cafe codetype Documentation</title>
+    <title>JGecko U - TCP Gecko 2.53 - cafe codetype Documentation</title>
     <link rel="shortcut icon" href="assets/img/Gecko.png" type="image/png">
     <link rel="stylesheet" href="assets/code/base.css">
     <link rel="stylesheet" href="assets/code/content.css">
@@ -34,9 +34,10 @@
                 <li><a href="#01">String Writes<span>[01]</span></a></li>
                 <li><a href="#02">Skip Writes<span>[02]</span></a></li>
                 <li><a href="#20">Memory Fill<span>[20]</span></a></li>
+                <li><a href="#21">Memory Copy<span>[21]</span></a></li>
                 <li><a href="#F0">Corruptor<span>[F0]</span></a></li>
             </ul>
-            <h2>Logical Operators</h2>
+            <h2>If / Else</h2>
             <ul>
                 <li><a href="#03">If equal<span>[03]</span></a></li>
                 <li><a href="#04">If not equal<span>[04]</span></a></li>
@@ -49,11 +50,13 @@
                 <li><a href="#0B">If value between<span>[0B]</span></a></li>
                 <li><a href="#0C">Add Time-Dependence<span>[0C]</span></a></li>
                 <li><a href="#0D">Reset Timer<span>[0D]</span></a></li>
+                <li><a href="#0E">Input Conditional<span>[0E]</span></a></li>
                 <li><a href="#0F">Negate Conditional<span>[0F]</span></a></li>
                 <li><a href="#80">Loop<span>[80]</span></a></li>
                 <li><a href="#81">Loop Indexed<span>[81]</span></a></li>
+                <li><a href="#82">Break Loop<span>[82]</span></a></li>
             </ul>
-            <h2>Arithmetic Operators</h2>
+            <h2>Perform Operations</h2>
             <ul>
                 <li><a href="#10">Load Integer<span>[10]</span></a></li>
                 <li><a href="#11">Store Integer<span>[11]</span></a></li>
@@ -73,10 +76,13 @@
             <h2>Execute</h2>
             <ul>
                 <li><a href="#C0">Execute ASM<span>[C0]</span></a></li>
-                <li><a href="#C1">Perform Cafe OS Syscalls<span>[C1]</span></a></li>
+                <li><a href="#C1">System- And Procedure Calls<span>[C1]</span></a></li>
                 <li><a href="#C2">Insert ASM via LR<span>[C2]</span></a></li>
                 <li><a href="#C3">Insert ASM via CTR<span>[C3]</span></a></li>
                 <li><a href="#C4">ASM String Writes<span>[C4]</span></a></li>
+                <li><a href="#E0">Display Message And Pause<span>[E0]</span></a></li>
+                <li><a href="#E1">Display Pointer Message And Pause<span>[E1]</span></a></li>
+                <li><a href="#E2">Clear Message And Resume<span>[E2]</span></a></li>
             </ul>
             <h2>Termination</h2>
             <ul>
@@ -99,7 +105,7 @@
             <div class="content" id="Content">
                 <a name="general"></a>
                 <div class="container">
-                    <h1>General Information <span class="no-select ghost category">TCP Gecko 2.52</span></h1>
+                    <h1>General Information <span class="no-select ghost category">TCP Gecko 2.53</span></h1>
                     <p>Cafe codetypes is a feature from TCP Gecko to simplify the making of cheat codes for the Nintendo Wii U.
 
 This documentation breaks down all available cafe codetypes into components, describes what those components do and shows available parameters.
@@ -145,7 +151,7 @@ Each component is assigned a letter and color for better visualization how each 
                             </tr>
                             <tr>
                                 <td><code><b><span class="range">RANGE_ST</span></b>, <b><span class="range">RANGE_EN</span></b></code></td>
-                                <td><code>Dereference memory address range.<br>Max possible range = 0x10000000 to 0x50000000.</code></td>
+                                <td><code>Dereference memory address range.</code></td>
                             </tr>
                             <tr>
                                 <td><code><b><span class="varOffset">YY</span></b>, <b><span class="varOffset">YYYY</span></b>, <b><span class="varOffset">YYYYYYYY</span></b>, <b><span class="varOffset">MMMMMMMM</span></b></code></td>
@@ -173,11 +179,15 @@ Each component is assigned a letter and color for better visualization how each 
                             </tr>
                         </tbody>
                     </table>
-                    <p>Letters with washed out colours represent codelines that are required for a cafe codetype to work.</p>
+                    <p>Letters with washed out colours represent codelines that are required for a cafe codetype to work.
+
+All code types except manually written PowerPC assembly code can write to read-only/executable memory regions.
+
+Take in mind that memory writes in read-only/executable memory regions are not persistent, meaning that if some other code modifies such addresses, the code handler will not re-write that value. If those code types are in a conditional with false result, its target address is modified or the codelist is re-sent, writes will be allowed to happen again.</p>
                     <p><i class="icon notice inlineIcon"></i><b> NOTICE</b>: All cafe codetypes follow a specific sequence of Hexadecimal values. Failure to follow the structure of any codetypes may crash the console. Also, accessing or writing to invalid addresses can crash the console. When you crash, you may unplug your Wii U, plug it back in, start your Wii U by pressing the power button and run the TCP Gecko Installer again.</p>
                 </div>
                 <div class="container">
-                    <h1>Q&As <span class="no-select ghost category">TCP Gecko 2.52</span></h1>
+                    <h1>Q&As <span class="no-select ghost category">TCP Gecko 2.53</span></h1>
 
                     <h3>What is a pointer?</h3>
                     <blockquote>A pointer is an object in many programming languages that stores a memory address. A pointer references a location in memory, and obtaining the value stored at that location is known as dereferencing (Load) the pointer.</blockquote>
@@ -208,7 +218,7 @@ A 32-bit Hexadecimal value has 4'294'967'296 possible values. (Hex: 0 to FFFFFFF
                     <p class="references">* Use a Decimal to Hexadecimal calculator for ease of value convertion.</p>
                 </div>
                 <div class="container">
-                    <h1>Sources <span class="no-select ghost category">TCP Gecko 2.52</span></h1>
+                    <h1>Sources <span class="no-select ghost category">TCP Gecko 2.53</span></h1>
                     <p><a href="https://www.techopedia.com/definition/23980/float-computer-science">https://www.techopedia.com/definition/23980/float-computer-science</a>
 <a href="https://en.wikipedia.org/wiki/Offset_(computer_science)">https://en.wikipedia.org/wiki/Offset_(computer_science)</a>
 <a href="https://en.wikipedia.org/wiki/Signedness">https://en.wikipedia.org/wiki/Signedness</a>
@@ -370,7 +380,46 @@ Integer value <code><b><span class="increment">II</span></b></code> (8-bit), <co
                         </tbody>
                     </table>
                     <p>Repeatedly writes a 32-bit value (<code><b><span class="value">VVVVVVVV</span></b></code>) starting at memory address <code><b><span class="address">LLLLLLLL</span></b></code> or computed pointer + volatile offset <code><b><span class="volatileOffset">KKKKKKKK</span></b></code>. *
-Range between the first and last range is determined by offset <code><b><span class="varOffset">MMMMMMMM</span></b></code>.</p> 
+Range between the first and last range is determined by offset <code><b><span class="varOffset">MMMMMMMM</span></b></code>.
+
+This code type executes once after being sent and then stops.
+If the code type is in a conditional with false result, its target address is modified or the codelist is re-sent, writes will re-send.</p> 
+
+                    <p class="references">* Writing value to a pointer must have a loaded pointer beforehand. See cafe codetype "<a href="#30" title="Jump to: Load Pointer [30]">Load Pointer [30]</a>" to learn more.</p>
+                </div>
+                <a name="21"></a>
+                <div class="container">
+                    <h1>Memory Copy <b>[21]</b><span class="no-select ghost category">Memory Writes</span></h1>
+                    <table class="demo">
+                        <thead>
+                            <tr class="no-select">
+                                <td>Format</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code><b><span class="codetype">21</span><span class="pointer">0</span>00000 <span class="address">EEEEEEEE</span><br><span class="address">LLLLLLLL</span> <span class="varOffset">MMMMMMMM</span></b></code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br>
+                    <table class="demo">
+                        <thead>
+                            <tr class="no-select">
+                                <td>Format (Pointer)</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code><b><span class="no-select ghost">30000000 LLLLLLLL<br>RANGE_ST RANGE_EN<br></span><span class="codetype">21</span><span class="pointer">1</span>00000 <span class="value">EEEEEEEE</span><br><span class="volatileOffset">KKKKKKKK</span> <span class="varOffset">MMMMMMMM</span><span class="no-select ghost"><br>D0000000 DEADCAFE</span></b></code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p>Copies a block of memory starting at memory address <code><b><span class="value">EEEEEEEE</span></b></code> to memory address <code><b><span class="address">LLLLLLLL</span></b></code> or computed pointer + volatile offset <code><b><span class="volatileOffset">KKKKKKKK</span></b></code>. *
+Range between the first and last range is determined by offset <code><b><span class="varOffset">MMMMMMMM</span></b></code>.
+
+This code type executes once after being sent and then stops.
+If the code type is in a conditional with false result, its target address is modified or the codelist is re-sent, writes will re-send.</p> 
 
                     <p class="references">* Writing value to a pointer must have a loaded pointer beforehand. See cafe codetype "<a href="#30" title="Jump to: Load Pointer [30]">Load Pointer [30]</a>" to learn more.</p>
                 </div>
@@ -390,11 +439,14 @@ Range between the first and last range is determined by offset <code><b><span cl
                         </tbody>
                     </table>
                     <p>Searches for value <code><b><span class="value">VVVVVVVV</span></b></code> between memory address <code><b><span class="address">LLLLLLLL</span></b></code> to <code><b><span class="address">EEEEEEEE</span></b></code>.
-If the value equals to the current inspected memory address, value <code><b><span class="value">WWWWWWWW</span></b></code> will be stored to that address.</p>
+If the value equals to the current inspected memory address, value <code><b><span class="value">WWWWWWWW</span></b></code> will be stored to that address.
+
+This code type executes once after being sent and then stops.
+If the code type is in a conditional with false result, its target address is modified or the codelist is re-sent, writes will re-send.</p>
                 </div>
                 <a name="03"></a>
                 <div class="container">
-                    <h1>If Equal <b>[03]</b><span class="no-select ghost category">Logical Operators</span></h1>
+                    <h1>If Equal <b>[03]</b><span class="no-select ghost category">If/Else</span></h1>
                     <table class="demo">
                         <thead>
                             <tr class="no-select">
@@ -436,7 +488,7 @@ If the condition is false, codetypes below will be skipped. Codetype <code><b><s
                 </div>
                 <a name="04"></a>
                 <div class="container">
-                    <h1>If Not Equal <b>[04]</b><span class="no-select ghost category">Logical Operators</span></h1>
+                    <h1>If Not Equal <b>[04]</b><span class="no-select ghost category">If/Else</span></h1>
                     <table class="demo">
                         <thead>
                             <tr class="no-select">
@@ -478,7 +530,7 @@ If the condition is false, codetypes below will be skipped. Codetype <code><b><s
                 </div>
                 <a name="05"></a>
                 <div class="container">
-                    <h1>If Greater <b>[05]</b><span class="no-select ghost category">Logical Operators</span></h1>
+                    <h1>If Greater <b>[05]</b><span class="no-select ghost category">If/Else</span></h1>
                     <table class="demo">
                         <thead>
                             <tr class="no-select">
@@ -520,7 +572,7 @@ If the condition is false, codetypes below will be skipped. Codetype <code><b><s
                 </div>
                 <a name="06"></a>
                 <div class="container">
-                    <h1>If Lower <b>[06]</b><span class="no-select ghost category">Logical Operators</span></h1>
+                    <h1>If Lower <b>[06]</b><span class="no-select ghost category">If/Else</span></h1>
                     <table class="demo">
                         <thead>
                             <tr class="no-select">
@@ -562,7 +614,7 @@ If the condition is false, codetypes below will be skipped. Codetype <code><b><s
                 </div>
                 <a name="07"></a>
                 <div class="container">
-                    <h1>If Greater Or Equal <b>[07]</b><span class="no-select ghost category">Logical Operators</span></h1>
+                    <h1>If Greater Or Equal <b>[07]</b><span class="no-select ghost category">If/Else</span></h1>
                     <table class="demo">
                         <thead>
                             <tr class="no-select">
@@ -604,7 +656,7 @@ If the condition is false, codetypes below will be skipped. Codetype <code><b><s
                 </div>
                 <a name="08"></a>
                 <div class="container">
-                    <h1>If Lower Or Equal <b>[08]</b><span class="no-select ghost category">Logical Operators</span></h1>
+                    <h1>If Lower Or Equal <b>[08]</b><span class="no-select ghost category">If/Else</span></h1>
                     <table class="demo">
                         <thead>
                             <tr class="no-select">
@@ -646,7 +698,7 @@ If the condition is false, codetypes below will be skipped. Codetype <code><b><s
                 </div>
                 <a name="09"></a>
                 <div class="container">
-                    <h1>Conditional Logical AND <b>[09]</b><span class="no-select ghost category">Logical Operators</span></h1>
+                    <h1>Conditional Logical AND <b>[09]</b><span class="no-select ghost category">If/Else</span></h1>
                     <table class="demo">
                         <thead>
                             <tr class="no-select">
@@ -688,7 +740,7 @@ If the condition is false, codetypes below will be skipped. Codetype <code><b><s
                 </div>
                 <a name="0A"></a>
                 <div class="container">
-                    <h1>Conditional Logical OR <b>[0A]</b><span class="no-select ghost category">Logical Operators</span></h1>
+                    <h1>Conditional Logical OR <b>[0A]</b><span class="no-select ghost category">If/Else</span></h1>
                     <table class="demo">
                         <thead>
                             <tr class="no-select">
@@ -730,7 +782,7 @@ If the condition is false, codetypes below will be skipped. Codetype <code><b><s
                 </div>
                 <a name="0B"></a>
                 <div class="container">
-                    <h1>If Value Between <b>[0B]</b><span class="no-select ghost category">Logical Operators</span></h1>
+                    <h1>If Value Between <b>[0B]</b><span class="no-select ghost category">If/Else</span></h1>
                     <table class="demo">
                         <thead>
                             <tr class="no-select">
@@ -772,7 +824,7 @@ If the condition is false, codetypes below will be skipped. Codetype <code><b><s
                 </div>
                 <a name="0C"></a>
                 <div class="container">
-                    <h1>Add Time-Dependence <b>[0C]</b><span class="no-select ghost category">Logical Operators</span></h1>
+                    <h1>Add Time-Dependence <b>[0C]</b><span class="no-select ghost category">If/Else</span></h1>
                     <table class="demo">
                         <thead>
                             <tr class="no-select">
@@ -790,7 +842,7 @@ cafe codetype <code><b><span class="codetype">D2</span></b></code> determines wh
                 </div>
                 <a name="0D"></a>
                 <div class="container">
-                    <h1>Reset Timer <b>[0D]</b><span class="no-select ghost category">Logical Operators</span></h1>
+                    <h1>Reset Timer <b>[0D]</b><span class="no-select ghost category">If/Else</span></h1>
                     <table class="demo">
                         <thead>
                             <tr class="no-select">
@@ -805,9 +857,82 @@ cafe codetype <code><b><span class="codetype">D2</span></b></code> determines wh
                     </table>
                     <p>If address <code><b><span class="address">LLLLLLLL</span></b></code> has a value equal to the specified 16-bit value <code><b><span class="value">VVVV</span></b></code>, the previous Time-Dependent-Codetype will restart its timer.</p>
                 </div>
+                <a name="0E"></a>
+                <div class="container">
+                    <h1>Input Conditional <b>[0E]</b><span class="no-select ghost category">If/Else</span></h1>
+                    <table class="demo">
+                        <thead>
+                            <tr class="no-select">
+                                <td>Format</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code><b><span class="codetype">0E</span>000<span class="value">X</span>0<span class="value">Y</span> <span class="value">VVVVVVVV</span><span class="no-select ghost">...<br>D0000000 DEADCAFE</span></b></code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p>If controller input <code><b><span class="value">VVVVVVVV</span></b></code> is pressed, code types below will execute.
+<code><b>0<span class="value">X</span></b></code> determines which controller type to use.
+<code><b>0<span class="value">Y</span></b></code> determines which controller port to read from.
+
+<u><b><code>0<span class="value">X</span></code> options:</b></u>
+<code><b>0<span class="value">0</span></b>: Wii U GamePad</code>
+<code><b>0<span class="value">1</span></b>: WiiMote</code>
+<code><b>0<span class="value">2</span></b>: WiiMote & Nunchuck </code>
+<code><b>0<span class="value">3</span></b>: Classic/Pro Controller</code>
+
+<u><b><code>0<span class="value">Y</span></code> options:</b></u>
+<code><b>0<span class="value">0</span></b>: Port 1</code>
+<code><b>0<span class="value">1</span></b>: Port 2</code>
+<code><b>0<span class="value">2</span></b>: Port 3</code> 
+<code><b>0<span class="value">3</span></b>: Port 4</code>
+
+Note: There's only one Wii U GamePad port in retail Wii Us.
+
+<u><b>GamePad / WiiMote / WiiMote & Nunchuck / Classic Controller / Pro Controller <code><span class="value">VVVVVVVV</span></code> options:</b></u>
+<code><b><span class="value">00008000</span> / <span class="value">00000800</span> / <span class="value">00000800</span> / <span class="value">00000010</span> / <span class="value">00000010</span></b>: A</code>
+<code><b><span class="value">00004000</span> / <span class="value">00000400</span> / <span class="value">00000400</span> / <span class="value">00000040</span> / <span class="value">00000040</span></b>: B</code>
+<code><b><span class="value">00002000</span> / <span class="value">--------</span> / <span class="value">--------</span> / <span class="value">00000008</span> / <span class="value">00000008</span></b>: X</code>
+<code><b><span class="value">00001000</span> / <span class="value">--------</span> / <span class="value">--------</span> / <span class="value">00000020</span> / <span class="value">00000020</span></b>: Y</code>
+<code><b><span class="value">--------</span> / <span class="value">00000200</span> / <span class="value">00000200</span> / <span class="value">--------</span> / <span class="value">--------</span></b>: 1</code>
+<code><b><span class="value">--------</span> / <span class="value">00000100</span> / <span class="value">00000100</span> / <span class="value">--------</span> / <span class="value">--------</span></b>: 2</code>
+<code><b><span class="value">00000800</span> / <span class="value">00000001</span> / <span class="value">00000001</span> / <span class="value">00000002</span> / <span class="value">00000002</span></b>: D-Pad Left</code>
+<code><b><span class="value">00000400</span> / <span class="value">00000002</span> / <span class="value">00000002</span> / <span class="value">00008000</span> / <span class="value">00008000</span></b>: D-Pad Right</code>
+<code><b><span class="value">00000200</span> / <span class="value">00000008</span> / <span class="value">00000008</span> / <span class="value">00000001</span> / <span class="value">00000001</span></b>: D-Pad Up</code>
+<code><b><span class="value">00000100</span> / <span class="value">00000004</span> / <span class="value">00000004</span> / <span class="value">00004000</span> / <span class="value">00004000</span></b>: D-Pad Down</code>
+<code><b><span class="value">--------</span> / <span class="value">--------</span> / <span class="value">00002000</span> / <span class="value">--------</span> / <span class="value">--------</span></b>: Z</code>
+<code><b><span class="value">--------</span> / <span class="value">--------</span> / <span class="value">00004000</span> / <span class="value">--------</span> / <span class="value">--------</span></b>: C</code>
+<code><b><span class="value">00000080</span> / <span class="value">--------</span> / <span class="value">--------</span> / <span class="value">00000080</span> / <span class="value">00000080</span></b>: ZL</code>
+<code><b><span class="value">00000040</span> / <span class="value">--------</span> / <span class="value">--------</span> / <span class="value">00000004</span> / <span class="value">00000004</span></b>: ZR</code>
+<code><b><span class="value">00000020</span> / <span class="value">--------</span> / <span class="value">--------</span> / <span class="value">00002000</span> / <span class="value">00002000</span></b>: L</code>
+<code><b><span class="value">00000010</span> / <span class="value">--------</span> / <span class="value">--------</span> / <span class="value">00000200</span> / <span class="value">00000200</span></b>: R</code>
+<code><b><span class="value">00000008</span> / <span class="value">00000010</span> / <span class="value">00000010</span> / <span class="value">00000400</span> / <span class="value">00000400</span></b>: Plus (+)</code>
+<code><b><span class="value">00000004</span> / <span class="value">00001000</span> / <span class="value">00001000</span> / <span class="value">00001000</span> / <span class="value">00001000</span></b>: Minus (-)</code>
+<code><b><span class="value">00000002</span> / <span class="value">00008000</span> / <span class="value">00008000</span> / <span class="value">00000800</span> / <span class="value">00000800</span></b>: Home</code>
+<code><b><span class="value">00000001</span> / <span class="value">--------</span> / <span class="value">--------</span> / <span class="value">--------</span> / <span class="value">--------</span></b>: Sync</code>
+<code><b><span class="value">00020000</span> / <span class="value">--------</span> / <span class="value">--------</span> / <span class="value">--------</span> / <span class="value">00001000</span></b>: Right Stick Button</code>
+<code><b><span class="value">00040000</span> / <span class="value">--------</span> / <span class="value">--------</span> / <span class="value">--------</span> / <span class="value">00002000</span></b>: Left Stick Button</code>
+<code><b><span class="value">00010000</span> / <span class="value">--------</span> / <span class="value">--------</span> / <span class="value">--------</span> / <span class="value">--------</span></b>: TV</code>
+<code><b><span class="value">04000000</span> / <span class="value">--------</span> / <span class="value">--------</span> / <span class="value">00100000</span> / <span class="value">00400000</span></b>: Right Stick Emulation Left</code>
+<code><b><span class="value">02000000</span> / <span class="value">--------</span> / <span class="value">--------</span> / <span class="value">00200000</span> / <span class="value">00800000</span></b>: Right Stick Emulation Right</code>
+<code><b><span class="value">01000000</span> / <span class="value">--------</span> / <span class="value">--------</span> / <span class="value">00800000</span> / <span class="value">02000000</span></b>: Right Stick Emulation Up</code>
+<code><b><span class="value">00800000</span> / <span class="value">--------</span> / <span class="value">--------</span> / <span class="value">00400000</span> / <span class="value">01000000</span></b>: Right Stick Emulation Down</code>
+<code><b><span class="value">40000000</span> / <span class="value">--------</span> / <span class="value">--------</span> / <span class="value">00010000</span> / <span class="value">00040000</span></b>: Left Stick Emulation Left</code>
+<code><b><span class="value">20000000</span> / <span class="value">--------</span> / <span class="value">--------</span> / <span class="value">00020000</span> / <span class="value">00080000</span></b>: Left Stick Emulation Right</code>
+<code><b><span class="value">10000000</span> / <span class="value">--------</span> / <span class="value">--------</span> / <span class="value">00080000</span> / <span class="value">00200000</span></b>: Left Stick Emulation Up</code>
+<code><b><span class="value">08000000</span> / <span class="value">--------</span> / <span class="value">--------</span> / <span class="value">00040000</span> / <span class="value">00100000</span></b>: Left Stick Emulation Down</code>
+<code><b><span class="value">--------</span> / <span class="value">--------</span> / <span class="value">00000001</span> / <span class="value">--------</span> / <span class="value">--------</span></b>: Nunchuck Stick Emulation Left</code>
+<code><b><span class="value">--------</span> / <span class="value">--------</span> / <span class="value">00000002</span> / <span class="value">--------</span> / <span class="value">--------</span></b>: Nunchuck Stick Emulation Right</code>
+<code><b><span class="value">--------</span> / <span class="value">--------</span> / <span class="value">00000008</span> / <span class="value">--------</span> / <span class="value">--------</span></b>: Nunchuck Stick Emulation Up</code>
+<code><b><span class="value">--------</span> / <span class="value">--------</span> / <span class="value">00000004</span> / <span class="value">--------</span> / <span class="value">--------</span></b>: Nunchuck Stick Emulation Down</code>
+
+Note: Add values together if you wish to use button combinations.
+</p>
+                </div>
                 <a name="0F"></a>
                 <div class="container">
-                    <h1>Negate Conditional <b>[0F]</b><span class="no-select ghost category">Logical Operators</span></h1>
+                    <h1>Negate Conditional <b>[0F]</b><span class="no-select ghost category">If/Else</span></h1>
                     <table class="demo">
                         <thead>
                             <tr class="no-select">
@@ -835,7 +960,7 @@ Time Dependence > Execute after TTTTTTTT frames has passed.</p>
                 </div>
                 <a name="80"></a>
                 <div class="container">
-                    <h1>Loop <b>[80]</b><span class="no-select ghost category">Logical Operators</span></h1>
+                    <h1>Loop <b>[80]</b><span class="no-select ghost category">If/Else</span></h1>
                     <table class="demo">
                         <thead>
                             <tr class="no-select">
@@ -852,7 +977,7 @@ Time Dependence > Execute after TTTTTTTT frames has passed.</p>
                 </div>
                 <a name="81"></a>
                 <div class="container">
-                    <h1>Loop Indexed <b>[81]</b><span class="no-select ghost category">Logical Operators</span></h1>
+                    <h1>Loop Indexed <b>[81]</b><span class="no-select ghost category">If/Else</span></h1>
                     <table class="demo">
                         <thead>
                             <tr class="no-select">
@@ -867,9 +992,26 @@ Time Dependence > Execute after TTTTTTTT frames has passed.</p>
                     </table>
                     <p>Codelines between codetype [81] and codetype [D1] will repeat until the value at integer register <code><b><span class="intRegister">R</span></b></code> has been reached.</p>
                 </div>
+                <a name="82"></a>
+                <div class="container">
+                    <h1>Break Loop <b>[82]</b><span class="no-select ghost category">If/Else</span></h1>
+                    <table class="demo">
+                        <thead>
+                            <tr class="no-select">
+                                <td>Format</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code><b><span class="codetype">82</span>000000 00000000</b></code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p>Forces the loop count to be set to max, preventing the loop from resuming.</p>
+                </div>
                 <a name="10"></a>
                 <div class="container">
-                    <h1>Load Integer <b>[10]</b><span class="no-select ghost category">Arithmetic Operations</span></h1>
+                    <h1>Load Integer <b>[10]</b><span class="no-select ghost category">Perform Operations</span></h1>
                     <table class="demo">
                         <thead>
                             <tr class="no-select">
@@ -909,7 +1051,7 @@ There are 8 available integer registers: <code><b><span class="intRegister">0</s
                 </div>
                 <a name="11"></a>
                 <div class="container">
-                    <h1>Store Integer <b>[11]</b><span class="no-select ghost category">Arithmetic Operations</span></h1>
+                    <h1>Store Integer <b>[11]</b><span class="no-select ghost category">Perform Operations</span></h1>
                     <table class="demo">
                         <thead>
                             <tr class="no-select">
@@ -949,7 +1091,7 @@ There are 8 available integer registers: <code><b><span class="intRegister">0</s
                 </div>
                 <a name="12"></a>
                 <div class="container">
-                    <h1>Load Float <b>[12]</b><span class="no-select ghost category">Arithmetic Operations</span></h1>
+                    <h1>Load Float <b>[12]</b><span class="no-select ghost category">Perform Operations</span></h1>
                     <table class="demo">
                         <thead>
                             <tr class="no-select">
@@ -981,7 +1123,7 @@ There are 8 available float registers: <code><b><span class="floatRegister">0</s
                 </div>
                 <a name="13"></a>
                 <div class="container">
-                    <h1>Store Float <b>[13]</b><span class="no-select ghost category">Arithmetic Operations</span></h1>
+                    <h1>Store Float <b>[13]</b><span class="no-select ghost category">Perform Operations</span></h1>
                     <table class="demo">
                         <thead>
                             <tr class="no-select">
@@ -1013,7 +1155,7 @@ There are 8 available float registers: <code><b><span class="floatRegister">0</s
                 </div>
                 <a name="14"></a>
                 <div class="container">
-                    <h1>Integer Operations <b>[14]</b><span class="no-select ghost category">Arithmetic Operations</span></h1>
+                    <h1>Integer Operations <b>[14]</b><span class="no-select ghost category">Perform Operations</span></h1>
                     <table class="demo">
                         <thead>
                             <tr class="no-select">
@@ -1048,12 +1190,19 @@ There are 8 available float registers: <code><b><span class="floatRegister">0</s
 5 = Subtraction (<code><b><span class="intRegister">R</span></b></code> = <code><b><span class="intRegister">R</span></b></code> - <code><b><span class="value">VVVVVVVV</span></b></code>)
 6 = Multiplication (<code><b><span class="intRegister">R</span></b></code> = <code><b><span class="intRegister">R</span></b></code> * <code><b><span class="value">VVVVVVVV</span></b></code>)
 7 = Division (<code><b><span class="intRegister">R</span></b></code> = <code><b><span class="intRegister">R</span></b></code> / <code><b><span class="value">VVVVVVVV</span></b></code>)
-8 = Convert integer to float (Integer register <code><b><span class="intRegister">S</span></b></code> = Converted float register <code><b><span class="intRegister">R</span></b></code>)</p>
+8 = Convert integer to float (Integer register <code><b><span class="intRegister">S</span></b></code> = Converted float register <code><b><span class="intRegister">R</span></b></code>)
+9 = AND (<code><b><span class="intRegister">R</span></b></code> = <code><b><span class="intRegister">R</span></b></code> & <code><b><span class="intRegister">S</span></b></code>)
+A = OR (<code><b><span class="intRegister">R</span></b></code> = <code><b><span class="intRegister">R</span></b></code> | <code><b><span class="intRegister">S</span></b></code>)
+B = XOR (<code><b><span class="intRegister">R</span></b></code> = <code><b><span class="intRegister">R</span></b></code> ^ <code><b><span class="intRegister">S</span></b></code>)
+C = AND (<code><b><span class="intRegister">R</span></b></code> = <code><b><span class="intRegister">R</span></b></code> & <code><b><span class="value">VVVVVVVV</span></b></code>)
+D = OR (<code><b><span class="intRegister">R</span></b></code> = <code><b><span class="intRegister">R</span></b></code> | <code><b><span class="value">VVVVVVVV</span></b></code>)
+E = XOR (<code><b><span class="intRegister">R</span></b></code> = <code><b><span class="intRegister">R</span></b></code> ^ <code><b><span class="value">VVVVVVVV</span></b></code>)
+F = Assign (<code><b><span class="intRegister">R</span></b></code> = <code><b><span class="value">VVVVVVVV</span></b></code>)</p>
                     <p class="references">* Usage of a pointer requires a loaded pointer beforehand. See cafe codetype "<a href="#30" title="Jump to: Load Pointer [30]">Load Pointer [30]</a>" to learn more.</p>
                 </div>
                 <a name="15"></a>
                 <div class="container">
-                    <h1>Float Operations <b>[15]</b><span class="no-select ghost category">Arithmetic Operations</span></h1>
+                    <h1>Float Operations <b>[15]</b><span class="no-select ghost category">Perform Operations</span></h1>
                     <table class="demo">
                         <thead>
                             <tr class="no-select">
@@ -1101,7 +1250,8 @@ There are 8 available float registers: <code><b><span class="floatRegister">0</s
 5 = Subtraction (<code><b><span class="floatRegister">R</span></b></code> = <code><b><span class="floatRegister">R</span></b></code> - <code><b><span class="value">VVVVVVVV</span></b></code>)
 6 = Multiplication (<code><b><span class="floatRegister">R</span></b></code> = <code><b><span class="floatRegister">R</span></b></code> * <code><b><span class="value">VVVVVVVV</span></b></code>)
 7 = Division (<code><b><span class="floatRegister">R</span></b></code> = <code><b><span class="floatRegister">R</span></b></code> / <code><b><span class="value">VVVVVVVV</span></b></code>)
-8 = Convert float to integer (Integer register <code><b><span class="intRegister">R</span></b></code> = Converted float register <code><b><span class="floatRegister">R</span></b></code>)</p>
+8 = Convert float to integer (Integer register <code><b><span class="intRegister">R</span></b></code> = Converted float register <code><b><span class="floatRegister">R</span></b></code>)
+F = Assign (<code><b><span class="floatRegister">R</span></b></code> = <code><b><span class="value">VVVVVVVV</span></b></code>)</p>
                     <p class="references">* Usage of a pointer requires a loaded pointer beforehand. See cafe codetype "<a href="#30" title="Jump to: Load Pointer [30]">Load Pointer [30]</a>" to learn more.</p>
                 </div>
                 <a name="30"></a>
@@ -1128,11 +1278,11 @@ There are 8 available float registers: <code><b><span class="floatRegister">0</s
                         </thead>
                         <tbody>
                             <tr>
-                                <td><code><b><span class="no-select ghost">30000000 LLLLLLLL<br>RANGE_ST RANGE_EN<br></span><span class="codetype">30</span><span class="pointer">1</span>00000 00000000<br><span class="range">RANGE_ST</span> <span class="range">RANGE_EN</span><span class="no-select ghost"><br>...<br>D0000000 DEADCAFE</span></b></code></td>
+                                <td><code><b><span class="no-select ghost">30000000 LLLLLLLL<br>RANGE_ST RANGE_EN<br></span><span class="codetype">30</span><span class="pointer">1</span>00000 <span class="volatileOffset">KKKKKKKK</span><br><span class="range">RANGE_ST</span> <span class="range">RANGE_EN</span><span class="no-select ghost"><br>...<br>D0000000 DEADCAFE</span></b></code></td>
                             </tr>
                         </tbody>
                     </table>
-                    <p>Load a pointer from memory address <code><b><span class="address">LLLLLLLL</span></b></code>.
+                    <p>Load a pointer from memory address <code><b><span class="address">LLLLLLLL</span></b></code> or computed pointer + offset <code><b><span class="volatileOffset">KKKKKKKK</span></b></code>.
 Loading a pointer-in-pointer is possible by placing the "Pointer-in-pointer" format as many times needed. * 
 <code><b><span class="range">RANGE_ST</span></b></code> represents the start of reliable memory range the pointed address is located.
 <code><b><span class="range">RANGE_EN</span></b></code> represents the end of reliable memory range the pointed address is located.
@@ -1242,7 +1392,7 @@ If the link register (LR) is needed, remember to back it up in the stack or some
                 </div>
                 <a name="C1"></a>
                 <div class="container">
-                    <h1>Perform Cafe OS Syscalls <b>[C1]</b><span class="no-select ghost category">Execute</span></h1>
+                    <h1>System- And Procedure Calls <b>[C1]</b><span class="no-select ghost category">Execute</span></h1>
                     <table class="demo">
                         <thead>
                             <tr>
@@ -1251,11 +1401,15 @@ If the link register (LR) is needed, remember to back it up in the stack or some
                         </thead>
                         <tbody>
                             <tr>
-                                <td><code><b><span class="codetype">C1</span>00<span class="value">XXXX</span> 00000000</b></code></td>
+                                <td><code><b><span class="codetype">C1</span>00<span class="value">XXXX</span> <span class="address">LLLLLLLL</span></b></code></td>
                             </tr>
                         </tbody>
                     </table>
-                    <p>Perform a system call. <code><b><span class="value">XXXX</span></b></code> = SysCall value.*</p>
+                    <p>Perform a system call <code><b><span class="value">XXXX</span></b></code> * or a procedure call <code><b><span class="address">LLLLLLLL</span></b></code>.
+If syscall <code><b><span class="value">XXXX</span></b></code> is <code><b><span class="value">0000</span></b></code>, <code><b><span class="address">LLLLLLLL</span></b></code> will be executed.
+
+This code type takes <a href="#14">Integer Registers</a> and <a href="#15">Float Registers</a> as input and output.
+From integer/float register 0 to 7 is same as r3 to r10 or f1 to f8.</p>
                     <p class="references">* Visit <a href="http://wiiubrew.org/wiki/Cafe_OS_syscalls" title="Visit WiiUBrew.org">WiiUBrew.org</a> to find all available SysCall values.</p>
                 </div>
                 <a name="C2"></a>
@@ -1274,7 +1428,8 @@ If the link register (LR) is needed, remember to back it up in the stack or some
                         </tbody>
                     </table>
                     <p>This codetype will replace the hook address <code><b><span class="address">LLLLLLLL</span></b></code> with an absolute branch and link to the first "<code><b><span class="value">XXXXXXXX</span></b></code>" instruction. <code><b><span class="amount">NNNN</span></b></code> defines the amount of code lines excluding the first one.
-This is similar to the Wii variant, except you must end the assembly code with a "blr", meaning you should save/restore the LR as needed. This codetype should work fine as long as your hook address is within a non-leaf function, meaning that the function saves the LR at the beginning. *</p>
+NOTE: The coder is responsible of restoring the original instruction that got replaced by the hook and also undoing the patch when the cheat code is disabled.
+You must end the assembly code with a "blr", meaning you should save/restore the LR as needed. This codetype should work fine as long as your hook address is within a non-leaf function, meaning that the function saves the LR at the beginning. *</p>
                     <p class="references">* Refer to this documentation for writing PowerPC Assembly code: <a href="https://www.ibm.com/support/knowledgecenter/ssw_aix_72/assembler/assembler_pdf.pdf" title="View assembly documentation">https://www.ibm.com/support/knowledgecenter/ssw_aix_72/assembler/assembler_pdf.pdf</a>.</p>
                 </div>
                 <a name="C3"></a>
@@ -1293,7 +1448,8 @@ This is similar to the Wii variant, except you must end the assembly code with a
                         </tbody>
                     </table>
                     <p>This codetype will replace the hook address <code><b><span class="address">LLLLLLLL</span></b></code> with an absolute branch to the first "<code><b><span class="value">XXXXXXXX</span></b></code>" instruction. <code><b><span class="amount">NNNN</span></b></code> defines the amount of code lines excluding the first one.
-This is similar to the Wii variant, except you must end the assembly code with a "bctr"and before this you must load the address LLLLLLLL + 0x4 into the CTR. This codetype is included for compatibility in case the C2 codetype causes a crash for a given address (i.e. the address is within a leaf function). *</p>
+NOTE: The coder is responsible of restoring the original instruction that got replaced by the hook and also undoing the patch when the cheat code is disabled.
+You must end the assembly code with a "bctr"and before this you must load the address LLLLLLLL + 0x4 into the CTR. This codetype is included for compatibility in case the C2 codetype causes a crash for a given address (i.e. the address is within a leaf function). *</p>
                     <p class="references">* Refer to this documentation for writing PowerPC Assembly code: <a href="https://www.ibm.com/support/knowledgecenter/ssw_aix_72/assembler/assembler_pdf.pdf" title="View assembly documentation">https://www.ibm.com/support/knowledgecenter/ssw_aix_72/assembler/assembler_pdf.pdf</a>.</p>
                 </div>
                 <a name="C4"></a>
@@ -1311,7 +1467,77 @@ This is similar to the Wii variant, except you must end the assembly code with a
                             </tr>
                         </tbody>
                     </table>
-                    <p>This codetype allows writing data to the code region. <code><b><span class="address">LLLLLLLL</span></b></code> defines the starting memory address for the writes. <code><b><span class="amount">NNNN</span></b></code> defines the amount of instructions (32-bit values) to be stored. *</p>
+                    <p>This codetype allows writing data to the code region. <code><b><span class="address">LLLLLLLL</span></b></code> defines the starting memory address for the writes. <code><b><span class="amount">NNNN</span></b></code> defines the amount of code lines excluding the first one. *</p>
+                    <p class="references">* Refer to this documentation for writing PowerPC Assembly code: <a href="https://www.ibm.com/support/knowledgecenter/ssw_aix_72/assembler/assembler_pdf.pdf" title="View assembly documentation">https://www.ibm.com/support/knowledgecenter/ssw_aix_72/assembler/assembler_pdf.pdf</a>.</p>
+                </div>
+                <a name="E0"></a>
+                <div class="container">
+                    <h1>Display Message And Pause <b>[E0]</b><span class="no-select ghost category">Execute</span></h1>
+                    <table class="demo">
+                        <thead>
+                            <tr>
+                                <td>Format</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code><b><span class="codetype">E0</span>000000 00<font color="red">RR</font><font color="green">GG</font><font color="blue">BB</font><br><span class="value">SSSSSSSS</span> <span class="value">SSSSSS00</span></b></code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p>Displays a message on the screen and pauses the current title. <code><b><font color="red">RR</font><font color="green">GG</font><font color="blue">BB</font></b></code> sets a background color, text is white by default.
+String <code><b><span class="value">SS</span></b></code> is a UTF-8 formatted string to display on the screen. This string is null-terminated. Meaning that the last byte must end with <span class="value">00</span>.
+
+This code type executes once after being sent and then stops.
+If the code type is in a conditional with false result, this code type can be re-activated.
+
+<i class="icon notice inlineIcon"></i> <b>WARNING</b>: Some titles don't support this code type.</p>
+                </div>
+                <a name="E1"></a>
+                <div class="container">
+                    <h1>Display Pointer Message And Pause <b>[E1]</b><span class="no-select ghost category">Execute</span></h1>
+                    <table class="demo">
+                        <thead>
+                            <tr>
+                                <td>Format</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code><b><span class="no-select ghost">30000000 LLLLLLLL<br>RANGE_ST RANGE_EN</span><br><span class="codetype">E1</span>000000 00<font color="red">RR</font><font color="green">GG</font><font color="blue">BB</font><span class="no-select ghost"><br>...<br>D0000000 DEADCAFE</span></b></code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p>Displays a message on the screen and pauses the current title. <code><b><font color="red">RR</font><font color="green">GG</font><font color="blue">BB</font></b></code> sets a background color, text is white by default.
+String located at the computed pointer should contain a buffer of UTF-8 formatted characters to display on the screen. This string is null-terminated. Meaning that the last byte must end with <span class="value">00</span>.
+
+This code type executes once after being sent and then stops.
+If the code type is in a conditional with false result, this code type can be re-activated.
+
+<i class="icon notice inlineIcon"></i> <b>WARNING</b>: Some titles don't support this code type.</p>
+                    <p class="references">* Refer to this documentation for writing PowerPC Assembly code: <a href="https://www.ibm.com/support/knowledgecenter/ssw_aix_72/assembler/assembler_pdf.pdf" title="View assembly documentation">https://www.ibm.com/support/knowledgecenter/ssw_aix_72/assembler/assembler_pdf.pdf</a>.</p>
+                </div>
+                <a name="E2"></a>
+                <div class="container">
+                    <h1>Clear Message And Resume <b>[E2]</b><span class="no-select ghost category">Execute</span></h1>
+                    <table class="demo">
+                        <thead>
+                            <tr>
+                                <td>Format</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code><b><span class="codetype">E2</span>000000 00000000</b></code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p>Clears a message displayed by code type <a href="#E0">E0</a> and <a href="#E1">E1</a> and un-pauses the current title.
+
+This code type executes once after being sent and then stops.
+If the code type is in a conditional with false result, this code type can be re-activated.
+                        
+<i class="icon notice inlineIcon"></i> <b>WARNING</b>: Some titles don't support this code type.</p>
                     <p class="references">* Refer to this documentation for writing PowerPC Assembly code: <a href="https://www.ibm.com/support/knowledgecenter/ssw_aix_72/assembler/assembler_pdf.pdf" title="View assembly documentation">https://www.ibm.com/support/knowledgecenter/ssw_aix_72/assembler/assembler_pdf.pdf</a>.</p>
                 </div>
                 <a name="D0"></a>
